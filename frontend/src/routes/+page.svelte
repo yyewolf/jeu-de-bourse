@@ -1,2 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>Bonjour le monde</h1>
+<p>Clé publique : {pkey}</p>
+
+<script>
+	let pkey = import.meta.env.VITE_JDB_RECAPTCHA_PKEY;
+</script>
