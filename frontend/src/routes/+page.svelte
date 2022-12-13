@@ -1,6 +1,17 @@
-<h1>Bonjour le monde</h1>
-<p>Clé publique : {pkey}</p>
-
 <script>
-	let pkey = import.meta.env.VITE_JDB_RECAPTCHA_PKEY;
+	import "../app.css";
 </script>
+
+<div class="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+    <p class="text-3xl text-gray-700 font-bold mb-5">
+       Liste des pages
+    </p>
+    <p class="text-gray-500 text-lg">
+		<li>
+			<a href="/test/captcha">Test captcha</a>
+		</li>
+		<li>
+			<a href="/login">Login</a>
+		</li>
+    </p>
+</div>

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"jeu-de-bourse/internal/database"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -27,4 +28,10 @@ func HashPassword(password string) (string, error) {
 func (u *User) CheckPasswordHash(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	return err == nil
+}
+
+func GetUserByUsername(username string) (User, error) {
+	var user User
+	err := database.Session.Query("SELECT * FROM jeu_de_bourse.users WHERE username = ?", username).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	return user, err
 }

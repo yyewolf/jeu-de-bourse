@@ -1,6 +1,7 @@
 <script>
+    import back from '@/plugins/back.js';
+
     let pkey = import.meta.env.VITE_JDB_RECAPTCHA_PKEY;
-    let token = '';
 
     function onSubmit() {
         doRecaptcha();
@@ -9,7 +10,10 @@
     function doRecaptcha() {
         grecaptcha.ready(function() {
             grecaptcha.execute(pkey, { action: "submit" }).then(function(t) {
-                token = t;
+                // send to backend
+                back.post('/v1/captcha', { captchaToken: t }).then((res) => {
+                    console.log(res.data);
+                });
             });
         });
     }
@@ -21,8 +25,6 @@
 
 <h1>Test recaptcha</h1>
 
-<p>Token : {token}</p>
-
 <style>
     main {
       font-family: sans-serif;
@@ -31,7 +33,7 @@
 </style>
   
 <main>
-    <form on:submit|preventDefault={onSubmit}>
-      <button type="submit">submit</button>
+    <form>
+        <button type="submit" on:click|preventDefault={onSubmit}>submit</button>
     </form>
 </main>
