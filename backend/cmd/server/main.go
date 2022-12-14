@@ -3,6 +3,7 @@ package main
 import (
 	"jeu-de-bourse/api/v1/router"
 	"jeu-de-bourse/internal/env"
+	"jeu-de-bourse/internal/worker"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -35,5 +36,10 @@ func main() {
 	// Setup the routes
 	router.Route(app)
 
+	// Start the workers to get the stocks & update the prices
+	// worker.LoadStocks()
+	go worker.TradesWorker()
+
+	// Start the server
 	app.Run(":8080")
 }
