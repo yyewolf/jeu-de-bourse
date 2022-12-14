@@ -1,5 +1,5 @@
 <script>
-	import "../app.css";
+	import "@/app.css";
 </script>
 
 <div class="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">

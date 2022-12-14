@@ -11,7 +11,7 @@ func init() {
 	snowflake.Epoch = 1670521800000
 
 	// Node is Yewolf
-	node, err := snowflake.NewNode(89101119111108102)
+	node, err := snowflake.NewNode(89101119111108102 % 1023)
 	if err != nil {
 		panic(err)
 	}

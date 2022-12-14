@@ -10,7 +10,7 @@ import (
 type User struct {
 	ID        string    `json:"id"`
 	Username  string    `json:"username"`
-	Password  string    `json:"password"`
+	Password  string    `json:"-"`
 	Email     string    `json:"email"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -25,13 +25,33 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func (u *User) CheckPasswordHash(password string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+func (u *User) CheckPasswordHash(attempt string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(attempt))
 	return err == nil
 }
 
-func GetUserByUsername(username string) (User, error) {
+func GetUserByUsername(username string) (*User, error) {
 	var user User
-	err := database.Session.Query("SELECT * FROM jeu_de_bourse.users WHERE username = ?", username).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt, &user.UpdatedAt)
-	return user, err
+	err := database.Session.Query("SELECT id, username, password, email, created_at, updated_at FROM jeu_de_bourse.users WHERE username = ?", username).
+		Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	return &user, err
+}
+
+func GetUserByEmail(email string) (*User, error) {
+	var user User
+	err := database.Session.Query("SELECT id, username, password, email, created_at, updated_at FROM jeu_de_bourse.users WHERE email = ?", email).
+		Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	return &user, err
+}
+
+func GetUserByID(id string) (*User, error) {
+	var user User
+	err := database.Session.Query("SELECT id, username, password, email, created_at, updated_at FROM jeu_de_bourse.users WHERE id = ?", id).
+		Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	return &user, err
+}
+
+func (u *User) Create() error {
+	err := database.Session.Query("INSERT INTO jeu_de_bourse.users (id, username, password, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", u.ID, u.Username, u.Password, u.Email, u.CreatedAt, u.UpdatedAt).Exec()
+	return err
 }

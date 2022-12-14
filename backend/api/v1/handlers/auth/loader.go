@@ -1,9 +1,16 @@
 package auth
 
-import "github.com/gin-gonic/gin"
+import (
+	"jeu-de-bourse/api/v1/middlewares"
+
+	"github.com/gin-gonic/gin"
+)
 
 func LoadRoutes(r *gin.RouterGroup) {
-	r.Group("/auth")
+	sg := r.Group("/auth")
 
-	r.POST("/login", Login)
+	sg.POST("/register", middlewares.DeauthRequired(), middlewares.VerifyCaptcha(), Register)
+	sg.POST("/login", middlewares.DeauthRequired(), middlewares.VerifyCaptcha(), Login)
+	sg.GET("/logout", middlewares.AuthRequired(), Logout)
+	sg.GET("/debug", middlewares.AuthRequired(), Connected)
 }

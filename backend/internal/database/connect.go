@@ -37,4 +37,17 @@ func init() {
 		log.Println(err)
 		return
 	}
+
+	// Creates indexes if not exists
+	if err := session.Query("CREATE INDEX IF NOT EXISTS ON jeu_de_bourse.users (username);").Exec(); err != nil {
+		log.Println(err)
+		return
+	}
+
+	if err := session.Query("CREATE INDEX IF NOT EXISTS ON jeu_de_bourse.users (email);").Exec(); err != nil {
+		log.Println(err)
+		return
+	}
+
+	log.Println("[JDB-DB] Created keyspace and tables.")
 }

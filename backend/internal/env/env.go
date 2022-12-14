@@ -21,6 +21,10 @@ type Config struct {
 
 	// Recapcha
 	RecaptchaSecret string
+
+	// Cookie
+	CookieName string
+	CookieKey  string
 }
 
 func Getenv(key, def string) string {
@@ -40,5 +44,7 @@ func init() {
 		GlobalConfig.CassandraUsername = Getenv("JDB_CASSANDRA_USERNAME", "cassandra")
 		GlobalConfig.CassandraPassword = Getenv("JDB_CASSANDRA_PASSWORD", "cassandra")
 		GlobalConfig.RecaptchaSecret = Getenv("JDB_RECAPTCHA_SECRET", "6LcZ8uIUAAAAAER2Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8")
+		GlobalConfig.CookieName = Getenv("JDB_COOKIE_NAME", "jeu-de-bourse")
+		GlobalConfig.CookieKey = Getenv("JDB_COOKIE_KEY", "jeu-de-bourse")
 	}
 }

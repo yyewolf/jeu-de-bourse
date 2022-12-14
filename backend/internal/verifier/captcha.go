@@ -1,6 +1,7 @@
 package verifier
 
 import (
+	"fmt"
 	"jeu-de-bourse/internal/env"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 var session *recaptcha.ReCAPTCHA
 
 func init() {
-	captcha, err := recaptcha.NewReCAPTCHA(env.GlobalConfig.RecaptchaSecret, recaptcha.V3, 10*time.Second)
+	captcha, err := recaptcha.NewReCAPTCHA(env.GlobalConfig.RecaptchaSecret, recaptcha.V2, 10*time.Second)
 	if err != nil {
 		panic(err)
 	}
@@ -19,9 +20,7 @@ func init() {
 }
 
 func Verify(token string) bool {
-	err := session.VerifyWithOptions(token, recaptcha.VerifyOption{
-		Threshold: 0.6,
-		Action:    "submit",
-	})
+	err := session.VerifyWithOptions(token, recaptcha.VerifyOption{})
+	fmt.Println(err)
 	return err == nil
 }
