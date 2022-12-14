@@ -3,7 +3,7 @@
 
     let resp = "";
 
-    back.get('/v1/auth/debug')
+    back.get('/v1/auth/connected')
         .then((res) => {
             resp = JSON.stringify(res.data);
         })

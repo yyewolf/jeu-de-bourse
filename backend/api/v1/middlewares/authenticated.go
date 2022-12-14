@@ -29,6 +29,8 @@ func AuthRequired() gin.HandlerFunc {
 		// Fill the user in the context
 		u, err := models.GetUserByID(userID.(string))
 		if err != nil {
+			session.Clear()
+			session.Save()
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Vous devez être connecté pour faire cette action"})
 			return
 		}

@@ -12,5 +12,5 @@ func LoadRoutes(r *gin.RouterGroup) {
 	sg.POST("/register", middlewares.DeauthRequired(), middlewares.VerifyCaptcha(), Register)
 	sg.POST("/login", middlewares.DeauthRequired(), middlewares.VerifyCaptcha(), Login)
 	sg.GET("/logout", middlewares.AuthRequired(), Logout)
-	sg.GET("/debug", middlewares.AuthRequired(), Connected)
+	sg.GET("/connected", middlewares.AuthRequired(), Connected)
 }
