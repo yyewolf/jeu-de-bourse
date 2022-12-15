@@ -10,20 +10,24 @@ import (
 
 func TradesWorker() {
 	// Ticker to update the stocks every 15 minutes
-	ticker := time.NewTicker(30 * time.Minute)
+	ticker := time.NewTicker(10 * time.Minute)
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				updateTrades()
+				updateTrades("100")
+				// At midnight, update slow to make sure we have all the data
+				if time.Now().Hour() == 0 {
+					updateTrades("50000")
+				}
 			}
 		}
 	}()
 	time.Sleep(5 * time.Second)
-	updateTrades()
+	updateTrades("100")
 }
 
-func updateTrades() {
+func updateTrades(amount string) {
 	stocks, err := models.GetAllStocks()
 	if err != nil {
 		fmt.Println("[WORKER-TRADE] Error while getting stocks: ", err)

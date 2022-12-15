@@ -13,14 +13,14 @@
     });
 </script>
 
-<nav class="flex items-center justify-between flex-wrap p-6  bg-blue-400">
+<nav class="flex items-center justify-between flex-wrap p-3  bg-slate-800">
   <div class="flex items-center flex-shrink-0 text-white mr-6">
     <a href="/" class="font-semibold text-xl tracking-tight">Stock Race</a>
   </div>
   <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
     <div class="text-sm lg:flex-grow">
-      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-        Docs
+      <a href="/actions" class="block mt-4 lg:inline-block lg:mt-0 text-teal-100 hover:text-white mr-4">
+        Actions
       </a>
     </div>
     <div>
