@@ -9,7 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gocql/gocql v1.3.0
 	github.com/joho/godotenv v1.4.0
-	github.com/yyewolf/goronext v0.0.0-20221214201240-d64f21734b1f
+	github.com/yyewolf/goronext v0.0.0-20221217133709-3a6738bc7b33
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
 	gopkg.in/ezzarghili/recaptcha-go.v4 v4.3.0
 )

@@ -35,6 +35,7 @@ func init() {
 
 	dbload.LoadUsers(session)
 	dbload.LoadStock(session)
+	dbload.LoadTrades(session)
 
 	log.Println("[JDB-DB] Created keyspace and tables.")
 }

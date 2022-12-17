@@ -36,7 +36,15 @@ func updateTrades(amount string) {
 	fmt.Println("[WORKER-TRADE] Trade update started:", len(stocks))
 	errAmount := 0
 	for _, s := range stocks {
-		stockHistory, err := goronext.GetAllIntraDay(s.ID, s.Market)
+		when := time.Now()
+		// If it's saturday or sunday, we look at friday's data
+		if when.Weekday() == time.Saturday {
+			when = when.AddDate(0, 0, -1)
+		} else if when.Weekday() == time.Sunday {
+			when = when.AddDate(0, 0, -2)
+		}
+
+		stockHistory, err := goronext.GetAllIntraDay(s.ID, s.Market, amount, when)
 		if err != nil {
 			fmt.Printf("[WORKER-TRADE] Error while getting stock history: %s\n", err)
 			errAmount++

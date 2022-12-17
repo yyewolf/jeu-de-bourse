@@ -62,6 +62,12 @@ func FindStockWithQuery(query string) ([]*Stock, error) {
 	return stocks, iter.Close()
 }
 
+func GetStockByID(id string) (*Stock, error) {
+	var stock Stock
+	err := database.Session.Query("SELECT id, symbol, name, exchange, market, srd, loan FROM jeu_de_bourse.stocks WHERE id = ?;", id).Scan(&stock.ID, &stock.Symbol, &stock.Name, &stock.Exchange, &stock.Market, &stock.SRD, &stock.Loan)
+	return &stock, err
+}
+
 // Get stock value at a specific time
 func (s *Stock) GetStockValueAtTime(t time.Time) (int, error) {
 	var price int

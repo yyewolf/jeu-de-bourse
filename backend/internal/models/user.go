@@ -51,3 +51,8 @@ func (u *User) Create() error {
 	err := database.Session.Query("INSERT INTO jeu_de_bourse.users (id, username, password, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", u.ID, u.Username, u.Password, u.Email, u.CreatedAt, u.UpdatedAt).Exec()
 	return err
 }
+
+func (u *User) Disponible() (amount int, err error) {
+	// Extract all the trades of the user
+
+}
