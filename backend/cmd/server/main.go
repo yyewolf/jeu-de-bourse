@@ -30,6 +30,7 @@ func main() {
 	store := cookie.NewStore(secret)
 	store.Options(sessions.Options{
 		MaxAge: 10 * 60 * 60 * 24,
+		Path:   "/",
 	})
 	app.Use(sessions.Sessions(env.GlobalConfig.CookieName, store))
 

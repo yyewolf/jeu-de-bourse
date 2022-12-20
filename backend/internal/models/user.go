@@ -100,3 +100,14 @@ func (u *User) Investis() (amount int, err error) {
 	}
 	return amount, nil
 }
+func (u *User) Valorisation() (amount int, err error) {
+	// Start Comptant + Total des gains - Total des pertes - Investissement
+	completedTrades, _ := GetCompletedTradesByUserID(u.ID, false)
+
+	var total int
+	for _, trade := range completedTrades {
+		ratio := (1.0 - float64(trade.StartPrice)/float64(trade.StopPrice))
+		total += int(float64(trade.Amount) * ratio)
+	}
+	return env.GlobalConfig.StartComptant + total, nil
+}
