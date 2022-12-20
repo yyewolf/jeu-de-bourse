@@ -1,8 +1,6 @@
 <script>
     import back from '@/plugins/back.js';
-    import Nav from '@/routes/nav.svelte';
     import { Tooltip } from 'flowbite-svelte';
-    import "@/app.css";
 
     let stocks = [];
     let page = 1;
@@ -16,6 +14,11 @@
             .then((res) => {
                 stocks = res.data.stocks;
                 pages = res.data.pages;
+                for (let i = 0; i < stocks.length; i++) {
+                    stocks[i].last_price = (stocks[i].last_price/10000).toFixed(2);
+                    stocks[i].opening_price = (stocks[i].opening_price/10000).toFixed(2);
+                    stocks[i].var = (stocks[i].last_price / stocks[i].opening_price * 100);
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -25,10 +28,8 @@
     getStocks();
 </script>
 
-<Nav />
-
 <!-- Center container that will list all stocks & page navigation -->
-<div class="flex items-center justify-center bg-slate-600 h-full">
+<div class="flex items-center justify-center h-full">
     <!-- Use a card as a container -->
     <div class="w-full justify-center max-w-3xl p-4 bg-white border rounded-lg shadow-md sm:p-8 dark:bg-slate-800 dark:border-slate-700 mt-5 mb-5">
         <div class="flex items-center justify-between mb-7">
@@ -72,7 +73,7 @@
                         </div>
                         <div class="flex-2">
                             <div class="inline-flex items-center justify-end text-base font-normal text-gray-900 dark:text-white">
-                                <p class="mr-5">{stock.last_price/1000}€</p>
+                                <p class="mr-5">{stock.last_price}€</p>
                                 {#if stock.last_price > stock.opening_price}
                                     <svg class="h-6 w-6 text-green-400" viewBox="0 0 101.968 101.968" fill="currentColor">
                                         <path d="M57.797,54.094c1.144,0.419,2.424,0.108,3.248-0.788l30.839-33.643l7.217,6.032c0.353,0.294,0.847,0.349,1.254,0.136
@@ -94,11 +95,11 @@
                                 {/if}
                                 {#if stock.opening_price > 0}
                                     {#if stock.last_price > stock.opening_price}
-                                        <p class="ml-2 text-green-400">+{(100*stock.last_price/stock.opening_price-100).toFixed(2)}%</p>
+                                        <p class="ml-2 text-green-400">+{(stock.var-100).toFixed(2)}%</p>
                                     {:else if stock.last_price < stock.opening_price}
-                                        <p class="ml-2 text-red-400">-{(100-100*stock.last_price/stock.opening_price).toFixed(2)}%</p>
+                                        <p class="ml-2 text-red-400">-{(100-stock.var).toFixed(2)}%</p>
                                     {:else}
-                                        <p class="ml-2">{(100-100*stock.last_price/stock.opening_price).toFixed(2)}%</p>
+                                        <p class="ml-2">-{(100-stock.var).toFixed(2)}%</p>
                                     {/if}
                                 {/if}
                             </div>

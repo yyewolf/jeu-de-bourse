@@ -66,10 +66,6 @@ func LoadTrades(session *gocql.Session) {
 	}
 
 	// CREATE ALL INDEXES
-	if err := session.Query("CREATE INDEX IF NOT EXISTS trades_state_idx ON jeu_de_bourse.trades (state);").Exec(); err != nil {
-		log.Println(err)
-	}
-
 	if err := session.Query("CREATE INDEX IF NOT EXISTS trades_stock_id_idx ON jeu_de_bourse.trades (stock_id);").Exec(); err != nil {
 		log.Println(err)
 	}
@@ -117,4 +113,6 @@ func LoadTrades(session *gocql.Session) {
 	if err := session.Query("CREATE INDEX IF NOT EXISTS trades_stopped_at_idx ON jeu_de_bourse.trades (stopped_at);").Exec(); err != nil {
 		log.Println(err)
 	}
+
+	// adds trades for testing
 }

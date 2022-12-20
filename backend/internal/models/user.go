@@ -2,6 +2,7 @@ package models
 
 import (
 	"jeu-de-bourse/internal/database"
+	"jeu-de-bourse/internal/env"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -52,7 +53,50 @@ func (u *User) Create() error {
 	return err
 }
 
-func (u *User) Disponible() (amount int, err error) {
-	// Extract all the trades of the user
+func (u *User) DisponibleComptant() (amount int, err error) {
+	// Start Comptant + Total des gains - Total des pertes - Investissement
+	completedTrades, _ := GetCompletedTradesByUserID(u.ID, false)
 
+	var total int
+	for _, trade := range completedTrades {
+		ratio := (1.0 - float64(trade.StartPrice)/float64(trade.StopPrice))
+		total += int(float64(trade.Amount) * ratio)
+	}
+
+	amount = env.GlobalConfig.StartComptant + total
+
+	ongoingTrades, _ := GetOnGoingTradesByUserIDWithSRD(u.ID, false)
+	for _, trade := range ongoingTrades {
+		total -= trade.Amount
+	}
+	amount += total
+	return amount, nil
+}
+
+func (u *User) DisponibleSRD() (amount int, err error) {
+	// Start SRD + Total des gains - Total des pertes - Investissement
+	completedTrades, _ := GetCompletedTradesByUserID(u.ID, true)
+
+	var total int
+	for _, trade := range completedTrades {
+		ratio := (1.0 - float64(trade.StartPrice)/float64(trade.StopPrice))
+		total += int(float64(trade.Amount) * ratio)
+	}
+
+	amount = env.GlobalConfig.StartSRD + total
+
+	ongoingTrades, _ := GetOnGoingTradesByUserIDWithSRD(u.ID, true)
+	for _, trade := range ongoingTrades {
+		total -= trade.Amount
+	}
+	amount += total
+	return amount, nil
+}
+
+func (u *User) Investis() (amount int, err error) {
+	ongoingTrades, err := GetOnGoingTradesByUserID(u.ID)
+	for _, trade := range ongoingTrades {
+		amount += trade.Amount
+	}
+	return amount, nil
 }

@@ -47,7 +47,6 @@ func GetStocksPage(c *gin.Context) {
 
 	a, err := models.GetStocksAmountOfPages(StocksPerPage)
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(500, gin.H{
 			"success": false,
 			"status":  "Une erreur est survenue",
@@ -72,8 +71,8 @@ func GetStocksPage(c *gin.Context) {
 		}
 
 		if len(prices) > 0 {
-			eStock.OpeningPrice = prices[0]
-			eStock.LastPrice = prices[len(prices)-1]
+			eStock.LastPrice = prices[0]
+			eStock.OpeningPrice = prices[len(prices)-1]
 		}
 	}
 

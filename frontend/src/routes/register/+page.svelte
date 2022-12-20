@@ -1,8 +1,6 @@
 <script>
     import back from '@/plugins/back.js';
     import { Recaptcha, recaptcha, observer } from "svelte-recaptcha-v2";
-    import Nav from '@/routes/nav.svelte';
-    import "@/app.css";
 
     const googleRecaptchaSiteKey=import.meta.env.VITE_JDB_RECAPTCHA_PKEY;
     
@@ -55,12 +53,10 @@
     };
 </script>
 
-<div class="bg-gray-100 min-h-screen">
+<div class="min-h-screen">
     
-    <Nav />
-
-    <div class="flex items-center justify-center bg-gray-100">
-        <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg columns-1">
+    <div class="flex items-center justify-center">
+        <div class="px-8 py-6 mt-4 text-left bg-slate-800 shadow-lg columns-1">
             <h3 class="text-2xl font-bold text-center">Inscription à Stock Race</h3>
             {#if alert.show}
                 <div role="alert" class="mt-5">

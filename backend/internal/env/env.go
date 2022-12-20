@@ -3,6 +3,7 @@ package env
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -25,11 +26,38 @@ type Config struct {
 	// Cookie
 	CookieName string
 	CookieKey  string
+
+	// Settings
+	StartComptant int
+	StartSRD      int
+	Fee           float64
 }
 
 func Getenv(key, def string) string {
 	if v := os.Getenv(key); v != "" {
 		return v
+	}
+	return def
+}
+
+func Getenvint(key string, def int) int {
+	if v := os.Getenv(key); v != "" {
+		d, err := strconv.Atoi(v)
+		if err != nil {
+			return def
+		}
+		return d
+	}
+	return def
+}
+
+func Getenvfloat(key string, def float64) float64 {
+	if v := os.Getenv(key); v != "" {
+		d, err := strconv.ParseFloat(v, 64)
+		if err != nil {
+			return def
+		}
+		return d
 	}
 	return def
 }
@@ -46,5 +74,8 @@ func init() {
 		GlobalConfig.RecaptchaSecret = Getenv("JDB_RECAPTCHA_SECRET", "6LcZ8uIUAAAAAER2Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8")
 		GlobalConfig.CookieName = Getenv("JDB_COOKIE_NAME", "jeu-de-bourse")
 		GlobalConfig.CookieKey = Getenv("JDB_COOKIE_KEY", "jeu-de-bourse")
+		GlobalConfig.StartComptant = Getenvint("JDB_START_COMPTANT", 300000000)
+		GlobalConfig.StartSRD = Getenvint("JDB_START_SRD", 700000000)
+		GlobalConfig.Fee = Getenvfloat("JDB_FEE", 0.001)
 	}
 }
